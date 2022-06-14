@@ -4,8 +4,8 @@ import sys
 from urllib.parse import urljoin
 
 import requests
-from edx_rest_api_client.client import REQUEST_READ_TIMEOUT, REQUEST_CONNECT_TIMEOUT
-from requests import HTTPError
+from edx_rest_api_client.client import REQUEST_CONNECT_TIMEOUT, REQUEST_READ_TIMEOUT
+from requests.exceptions import HTTPError, RequestException
 
 from ecommerce_worker.configuration import CONFIGURATION_MODULE
 
@@ -77,6 +77,6 @@ def get_access_token():
         data = response.json()
         access_token = data['access_token']
     except (HTTPError, KeyError) as exc:
-        raise requests.RequestException(response=response) from exc
+        raise RequestException(response=response) from exc
 
     return access_token

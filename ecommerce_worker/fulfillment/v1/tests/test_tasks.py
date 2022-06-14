@@ -7,7 +7,7 @@ import ddt
 import responses
 from celery.exceptions import Ignore
 from edx_rest_api_client import exceptions
-from requests import HTTPError
+from requests.exceptions import HTTPError
 
 # Ensures that a Celery app is initialized when tests are run.
 from ecommerce_worker import celery_app  # pylint: disable=unused-import
