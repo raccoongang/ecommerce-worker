@@ -8,7 +8,7 @@ from urllib.parse import urljoin
 import ddt
 import responses
 from celery.exceptions import Retry
-from requests.exceptions import RequestException
+from requests.exceptions import HTTPError
 from testfixtures import LogCapture
 
 from ecommerce_worker.email.v1.braze.exceptions import (
@@ -288,7 +288,8 @@ class SendEmailsViaBrazeTests(TestCase):
 
     @responses.activate
     @patch('ecommerce_worker.email.v1.utils.get_access_token')
-    def test_update_assignment_exception(self, mock_get_access_token):
+    @patch('ecommerce_worker.email.v1.utils.requests.post')
+    def test_update_assignment_exception(self, mock_access_token, mock_requests_post):
         """
         Verify a message is logged after an unsuccessful API call to update the status.
         """
@@ -304,8 +305,12 @@ class SendEmailsViaBrazeTests(TestCase):
             responses.POST,
             host,
             json=success_response,
-            status=201)
-        mock_get_access_token.status.side_effect = RequestException
+            status=201
+        )
+
+        mock_access_token.return_value.json.return_value = {'access_token': 'FAKE-access-token'}
+        mock_requests_post.return_value.raise_for_status.side_effect = HTTPError
+
         with LogCapture(level=logging.INFO) as log:
             self.execute_task()
         log.check_present(

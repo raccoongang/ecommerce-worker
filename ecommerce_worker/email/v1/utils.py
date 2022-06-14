@@ -3,7 +3,7 @@ import string
 from urllib.parse import urljoin
 
 import requests
-from requests.exceptions import RequestException
+from requests.exceptions import HTTPError
 
 from ecommerce_worker.email.v1.braze.client import is_braze_enabled, get_braze_client
 from ecommerce_worker.utils import get_access_token, get_configuration
@@ -35,7 +35,7 @@ def update_assignment_email_status(offer_assignment_id, send_id, status, site_co
         )
         response.raise_for_status()
         data = response.json()
-    except RequestException:
+    except HTTPError:
         return False
 
     return bool(data.get('status') == 'updated')
