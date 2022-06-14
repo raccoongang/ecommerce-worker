@@ -22,8 +22,6 @@ dictConfig(logger_config)
 
 
 # AUTHENTICATION
-BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = 'http://localhost:18000/oauth2/'
-
 ECOMMERCE_SERVICE_USERNAME = 'service'
 # END AUTHENTICATION
 

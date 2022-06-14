@@ -16,10 +16,6 @@ BROKER_URL = 'redis://'
 ECOMMERCE_API_ROOT = 'http://localhost:18130/api/v2/'
 # END ORDER FULFILLMENT
 
-# AUTHENTICATION
-BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = 'http://localhost:18000/oauth2/'
-# END AUTHENTICATION
-
 # LOGGING
 logger_config = get_logger_config(debug=True, dev_env=True, local_loglevel='DEBUG')
 dictConfig(logger_config)
